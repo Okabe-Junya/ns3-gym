@@ -42,11 +42,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
+          no-cache: ${{ inputs.no-cache == true }}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ns3-gym:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
-
-      - name: Move Cache to Persistent Storage
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
