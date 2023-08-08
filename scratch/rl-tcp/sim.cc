@@ -72,6 +72,21 @@ PrintRxCount()
   }
 }
 
+double oldTotalRx = 0;
+double newTotalRx = 0;
+
+void TraceThroughput(Ptr<Application> app, Ptr<OutputStreamWrapper> stream, double timestep)
+{
+    Ptr<PacketSink> pktsink = DynamicCast<PacketSink>(app);
+    newTotalRx = pktsink->GetTotalRx();
+
+    // Calculate throughput
+    *stream->GetStream() << Simulator::Now ().GetSeconds () << ", " << (newTotalRx - oldTotalRx) * 8.0 / timestep / 1024 << std::endl;
+    oldTotalRx = newTotalRx;
+
+    // Schedule next trace
+    Simulator::Schedule(Seconds(timestep), &TraceThroughput, app, stream, timestep);
+}
 
 int main (int argc, char *argv[])
 {
@@ -297,6 +312,13 @@ int main (int argc, char *argv[])
     Ptr<PacketSink> pktSink = DynamicCast<PacketSink>(sinkApps.Get(i));
     pktSink->TraceConnectWithoutContext ("Rx", MakeBoundCallback (&CountRxPkts, i));
   }
+
+    // Trace
+    AsciiTraceHelper ascii;
+    // TODO: 絶対パスで無理やり特定のパスに保存しているので，後で直す
+    std::string fname = std::string("/ns3-gym/scratch/rl-tcp/throughput.csv");
+    Ptr<OutputStreamWrapper> stream = ascii.CreateFileStream (fname);
+    Simulator::Schedule (Seconds (tcpEnvTimeStep), &TraceThroughput, sinkApps.Get(0), stream, tcpEnvTimeStep);
 
   Simulator::Stop (Seconds (stop_time));
   Simulator::Run ();
