@@ -1,3 +1,5 @@
+[![docker-build](https://github.com/Okabe-Junya/ns3-gym/actions/workflows/docker-build.yml/badge.svg)](https://github.com/Okabe-Junya/ns3-gym/actions/workflows/docker-build.yml)
+
 ns3-gym
 ============
 
