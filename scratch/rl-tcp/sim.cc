@@ -91,7 +91,7 @@ void TraceThroughput(Ptr<Application> app, Ptr<OutputStreamWrapper> stream, doub
 int main (int argc, char *argv[])
 {
   uint32_t openGymPort = 5555;
-  double tcpEnvTimeStep = 0.1;
+  double tcpEnvTimeStep = 0.01;
 
   uint32_t nLeaf = 1;
   std::string transport_prot = "TcpRl";
@@ -114,7 +114,7 @@ int main (int argc, char *argv[])
   // required parameters for OpenGym interface
   cmd.AddValue ("openGymPort", "Port number for OpenGym env. Default: 5555", openGymPort);
   cmd.AddValue ("simSeed", "Seed for random generator. Default: 1", run);
-  cmd.AddValue ("envTimeStep", "Time step interval for time-based TCP env [s]. Default: 0.1s", tcpEnvTimeStep);
+  cmd.AddValue ("envTimeStep", "Time step interval for time-based TCP env [s]. Default: 0.01s", tcpEnvTimeStep);
   // other parameters
   cmd.AddValue ("nLeaf",     "Number of left and right side leaf nodes", nLeaf);
   cmd.AddValue ("transport_prot", "Transport protocol to use: TcpNewReno, "
