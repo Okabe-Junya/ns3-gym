@@ -33,7 +33,7 @@ startSim = bool(args.start)
 iterationNum = int(args.iterations)
 
 port = 5555
-simTime = 10  # seconds
+simTime = 20  # seconds
 stepTime = 0.5  # seconds
 seed = 12
 simArgs = {
