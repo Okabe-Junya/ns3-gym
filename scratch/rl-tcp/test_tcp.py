@@ -100,6 +100,10 @@ try:
         while True:
             stepIdx += 1
             action = tcpAgent.get_action(obs, reward, done, info)
+            if int(action[0]) >= 3 * 10 ** 6:
+                action[0] = 3 * 10 ** 6 - 1
+            if int(action[2]) >= 3 * 10 ** 6:
+                action[2] = 3 * 10 ** 6 - 1
             print(f"{stepIdx},{action[0]},{action[1]}")
 
             obs, reward, done, info = env.step(action)
