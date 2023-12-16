@@ -3,6 +3,8 @@
 
 import argparse
 import logging
+import time
+
 from ns3gym import ns3env
 from tcp_timebased import TcpTimeBase
 from tcp_eventbased import TcpEventBase
@@ -85,6 +87,7 @@ def get_agent(obs):
 get_agent.tcpAgents = {}
 get_agent.ob_space = ob_space
 get_agent.ac_space = ac_space
+start_time = time.time()
 
 try:
     print("step,ssThresh,windowSize")
@@ -98,6 +101,9 @@ try:
         tcpAgent = get_agent(obs)
 
         while True:
+            now = time.time()
+            if now - start_time > 60:
+                break
             stepIdx += 1
             action = tcpAgent.get_action(obs, reward, done, info)
             if int(action[0]) >= 3 * 10**6:
@@ -127,6 +133,9 @@ try:
 
         currIt += 1
         if currIt == iterationNum:
+            break
+        now = time.time()
+        if now - start_time > 60:
             break
 
 except KeyboardInterrupt:
